@@ -1,0 +1,21 @@
+[package]
+name = "verse-proto"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/VerseEngine/verse-entrance-server"
+description = "protocol buffer"
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+anyhow.workspace = true
+bytes.workspace = true
+itertools.workspace = true
+log.workspace = true
+prost.workspace = true
+verse-common = { path = "../common" }
+verse-session-id.workspace = true
+[build-dependencies]
+prost-build.workspace = true

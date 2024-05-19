@@ -1,0 +1,54 @@
+[package]
+name = "verse-hubserv"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/VerseEngine/verse-entrance-server"
+description = "Metaverse Tracker Server"
+
+[dependencies]
+anyhow.workspace = true
+async-rustls.workspace = true
+async-trait.workspace = true
+aws-config.workspace = true
+aws-sdk-ec2.workspace = true
+aws-sdk-secretsmanager.workspace = true
+aws-types.workspace = true
+axum = { version = ">=0.6", features = ["macros"] }
+axum-server = ">=0.4"
+base64.workspace = true
+bytes.workspace = true
+chrono.workspace = true
+clap = { version = "4", features = ["derive", "env"] }
+cloudflare.workspace = true
+console-subscriber = "0.1.9"
+dashmap = "5"
+env_logger.workspace = true
+ftlog = "0.2"
+futures.workspace = true
+fxhash = "0.2"
+http = "0.2.8"
+log.workspace = true
+once_cell.workspace = true
+parking_lot.workspace = true
+prost.workspace = true
+rand = "0.8"
+reqwest.workspace = true
+rustls.workspace = true
+rustls-acme.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tokio-stream = { version = "0.1.11", features = ["net"] }
+tokio-util = { version = "0.7.4", features = ["compat"] }
+tower-http = { version = ">=0.3", features = ["cors", "add-extension", "compression-full", "decompression-full", "timeout"] }
+url = "2"
+webrtc.workspace = true
+
+verse-cluster = { path = "../cluster" }
+verse-common = { path = "../common" }
+verse-proto = { path = "../proto" }
+verse-session-id.workspace = true
+
+[dev-dependencies]

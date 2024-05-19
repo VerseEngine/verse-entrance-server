@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package primitive;
+
+option go_package = "xcserv/hubpb";
+
+message Position3D {
+  double x = 1;
+  double z = 2;
+  float y = 3;
+}

@@ -1,0 +1,51 @@
+syntax = "proto3";
+
+package signaling;
+
+service SignalingService {
+  /* rpc ReceiveTransferData(TransferData) returns (Void); */
+  rpc UpdateOffer(UpdateSdpRequest) returns (Void);
+  rpc UpdateAnswer(UpdateSdpRequest) returns (Void);
+  rpc UpdateCandidate(UpdateSdpRequest) returns (Void);
+}
+
+message Void {
+}
+
+message UpdateSdpRequest {
+  string sdp = 1;
+}
+
+message TransferData {
+  bytes from_session_id = 1;
+  bytes payload = 2; // TransferPayload
+}
+
+message TransferPayload {
+  oneof data {
+    TransferPayloadRequestOffer request_offer = 1;
+    TransferPayloadOffer offer = 2;
+    bytes encrypted_payload = 3; // TransferPayloadPlain
+  }
+}
+
+message TransferPayloadRequestOffer {
+  bytes public_key = 1;
+}
+
+message TransferPayloadOffer {
+  bytes public_key = 1;
+  bytes encrypted_payload = 2; // SdpPayload
+}
+
+message TransferPayloadPlain {
+  oneof data {
+    SdpPayload answer = 1;
+    SdpPayload candidate = 2;
+  }
+}
+
+message SdpPayload {
+  string sdp = 1;
+}
+

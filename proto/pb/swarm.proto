@@ -1,0 +1,96 @@
+syntax = "proto3";
+
+package swarm;
+
+import "primitive.proto";
+
+option go_package = "xcserv/hubpb";
+
+service SwarmNodeService {
+  rpc Transfer(TransferRequest) returns (TransferResponse);
+  rpc ExchangeRoutingInfo(RoutingInfo) returns (RoutingInfo);
+}
+
+service SwarmBackendService {
+  rpc Swarm(stream SwarmPacket) returns (stream SwarmPacket);
+}
+
+message TransferResponse {
+  bool result = 1;
+  bytes dest_session_id = 2;
+}
+
+message TransferRequest {
+  bytes to_session_id = 1;
+  SignatureSet signature = 2;
+  bytes payload = 3; // TransferPayload
+  uint32 ttl = 4; // 最大Hop数
+}
+
+message SignatureSet {
+  bytes from_session_id = 1;
+  bytes signature = 2;
+  bytes salt = 3;
+}
+
+enum NodeType {
+  NODE_TYPE_UNSPECIFIED = 0;
+  NODE_TYPE_NORMAL= 1;
+  // trackerと接続しているnode
+  NODE_TYPE_GATEWAY = 2;
+  // httpでp2pネットワークに繋がるための入り口
+  NODE_TYPE_TRACKER = 3;
+}
+
+message RoutingInfo {
+  NodeType node_type = 1;
+  // node_type != NODE_TYPE_TRACKERの場合のみ
+  optional bytes session_id = 2;
+  // node_type != NODE_TYPE_TRACKERの場合のみ
+  optional primitive.Position3D position = 3;
+
+  // node_type != NODE_TYPE_TRACKERの場合のみ
+  optional GatewayState gateway_state  = 4;
+
+  oneof relation {
+    uint32 count = 5; 
+    RoutingInfos routing_infos = 6; // oneofでrepeatedが使えないので回避
+  }
+
+  repeated SessionIdWithTTL known_gateway_session_ids = 7;
+  // ExchangeRoutingInfo呼び出し元をLockonしているか.  *隣接Nodeのみ
+  bool is_lockon = 8;
+}
+
+message GatewayState {
+  // 最後にtrackerに接続し始めた時間.
+  uint64 last_connect_time = 1;
+  // 最後にtrackerから切断した時間.
+  uint64 last_disconnect_time= 2;
+}
+
+message SessionIdWithTTL {
+  bytes session_id = 1;
+  uint32 ttl = 2;
+}
+
+message RoutingInfos {
+  repeated RoutingInfo infos = 1;
+}
+
+message SwarmPacket {
+  oneof data {
+    SwarmRequest request = 1;
+    SwarmResponse response = 2;
+  }
+}
+
+message SwarmRequest {
+  uint32 rpc_id = 1;
+  bytes param = 2;
+}
+
+message SwarmResponse {
+  uint32 rpc_id = 1;
+  bytes param = 2;
+}

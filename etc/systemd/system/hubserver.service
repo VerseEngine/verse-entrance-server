@@ -1,0 +1,18 @@
+[Unit]
+Description=Verse Hub Server
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/sysconfig/hubserver
+ExecStart=/home/ec2-user/hubserver.sh
+Restart=always
+User=ec2-user
+Group=ec2-user
+
+StandardOutput=syslog
+StandardError=syslog
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+[Install]
+WantedBy=multi-user.target
+

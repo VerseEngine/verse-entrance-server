@@ -1,0 +1,8 @@
+.DS_Store
+.cargo/config
+target/
+pkg/
+node_modules/
+*.clean
+.envrc
+.env

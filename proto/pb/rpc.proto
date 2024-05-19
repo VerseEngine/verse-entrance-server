@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package rpc;
+option go_package = "xcserv/rtcrpc";
+
+message RpcPacket {
+  oneof data {
+    RpcRequest request = 1;
+    RpcResponse response = 2;
+  }
+  bool is_compressed = 3;
+}
+
+message RpcRequest {
+  uint32 rpc_id = 1;
+  bytes param = 2;
+}
+
+message RpcResponse {
+  uint32 rpc_id = 1;
+  bytes param = 2;
+}
